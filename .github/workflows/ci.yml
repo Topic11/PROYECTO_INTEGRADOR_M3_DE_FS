@@ -1,6 +1,5 @@
 name: DBT CI (Continuous Integration)
 
-# Se ejecuta cada vez que subís código (push) o creas un Pull Request a la rama 'main'
 on:
   push:
     branches: ["main"]
@@ -16,10 +15,15 @@ jobs:
       - name: "Clonar el código del repositorio"
         uses: actions/checkout@v3
 
+      - name: "Autenticar con Google Cloud usando la Llave JSON"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
       - name: "Instalar dbt y dependencias"
         run: pip install dbt-bigquery==1.7.9
 
-      - name: "Configurar el perfil de dbt usando el Secreto"
+      - name: "Configurar el perfil de dbt"
         run: |
           mkdir -p ~/.dbt
           echo "${{ secrets.DBT_PROFILES_YML }}" > ~/.dbt/profiles.yml
@@ -27,10 +31,5 @@ jobs:
       - name: "Instalar paquetes de dbt (dbt_utils)"
         run: dbt deps --project-dir ./youtube_dbt_project
 
-      - name: "Probar la conexión a BigQuery"
-        run: dbt debug --project-dir ./youtube_dbt_project
-
       - name: "Construir y testear todos los modelos de dbt"
-        # 'dbt build' es un comando poderoso que ejecuta run, seed y test en el orden correcto.
-        # El flag '--full-refresh' es para que 'seed' no falle si la tabla ya existe.
         run: dbt build --full-refresh --project-dir ./youtube_dbt_project
