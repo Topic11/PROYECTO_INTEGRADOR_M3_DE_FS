@@ -24,14 +24,17 @@ jobs:
         run: pip install dbt-bigquery==1.7.9
 
       - name: "Configurar el perfil de dbt"
-          run: |
-    mkdir -p ~/.dbt
-    cat <<EOF > ~/.dbt/profiles.yml
-    ${{ secrets.DBT_PROFILES_YML }}
-    EOF
+        run: |
+          mkdir -p ~/.dbt
+          cat <<EOF > ~/.dbt/profiles.yml
+          ${{ secrets.DBT_PROFILES_YML }}
+          EOF
 
       - name: "Instalar paquetes de dbt (dbt_utils)"
         run: dbt deps --project-dir ./youtube_dbt_project
+
+      - name: "Construir y testear todos los modelos de dbt"
+        run: dbt build --full-refresh --project-dir ./youtube_dbt_project
 
       - name: "Construir y testear todos los modelos de dbt"
         run: dbt build --full-refresh --project-dir ./youtube_dbt_project
