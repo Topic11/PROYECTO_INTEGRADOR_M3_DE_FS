@@ -62,7 +62,7 @@ El Data Warehouse está estructurado en tres capas:
 * **Capa `silver` (Plata):** Datos limpios, casteados y estandarizados.
 * **Capa `gold` (Oro):** Modelos de datos finales, listos para el consumo (dimensiones y hechos).
 
-NOTA: hay un error en la toma de imagen la cual genera los schemas con un prefijo y se muestran como raw_gold y raw_silver cuando solo debiera ser gold y silver.
+**NOTA**: hay un error en la toma de imagen la cual genera los schemas con un prefijo y se muestran como raw_gold y raw_silver cuando solo debiera ser gold y silver.
 
 La **calidad de los datos** se garantiza mediante tests (`not_null`, `unique`, `relationships`) definidos en los archivos `schema.yml` de `dbt`.
 
