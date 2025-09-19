@@ -1,0 +1,3 @@
+{{ config(materialized='table') }}
+with base as (select m.region, m.video_id, m.title, m.channel_title, m.publish_ts, m.publish_date, m.category_id, m.view_count, m.like_count, m.comment_count, safe_divide(m.like_count, nullif(m.view_count,0)) as like_rate, safe_divide(m.comment_count, nullif(m.view_count,0)) as comment_rate from {{ ref('stg_youtube_mostpopular') }} m)
+select b.*, c.category_name, ch.channel_title as channel_name_norm, v.title as video_title_norm, d.year, d.month, d.yyyymm from base b left join {{ ref('dim_category') }} c using (region, category_id) left join {{ ref('dim_channel') }} ch using (region, channel_title) left join {{ ref('dim_video') }} v using (video_id) left join {{ ref('dim_date') }} d on d.date = b.publish_date

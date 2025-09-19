@@ -1,0 +1,11 @@
+PI_M3_DE_FS:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: pi-m3-de-fs
+      dataset: raw # <--- VOLVEMOS A PONER "raw"
+      threads: 4
+      location: US
+      priority: interactive

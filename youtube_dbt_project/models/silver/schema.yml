@@ -1,0 +1,15 @@
+version: 2
+models:
+  - name: stg_youtube_categories
+    tests:
+      - not_null:
+          column_name: category_name
+      - unique:
+          column_name: "region || '-' || cast(category_id as string)"
+  - name: stg_youtube_mostpopular
+    tests:
+      - not_null:
+          column_name: video_id
+      - accepted_values:
+          column_name: region
+          values: ['US']

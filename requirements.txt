@@ -1,0 +1,4 @@
+requests
+google-cloud-storage
+google-cloud-bigquery
+dbt-bigquery==1.7.9

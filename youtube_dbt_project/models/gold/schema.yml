@@ -1,0 +1,21 @@
+version: 2
+models:
+  - name: dim_category
+    columns:
+      - name: category_id
+        tests: [not_null, unique]
+  - name: dim_channel
+    columns:
+      - name: channel_title
+        tests: [not_null, unique]
+  - name: dim_video
+    columns:
+      - name: video_id
+        tests: [not_null, unique]
+  - name: fact_trending
+    columns:
+      - name: video_id
+        tests:
+          - relationships:
+              to: ref('dim_video')
+              field: video_id

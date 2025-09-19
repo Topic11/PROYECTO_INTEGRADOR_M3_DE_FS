@@ -1,0 +1,22 @@
+name: 'PI_M3_DE_FS'
+version: '1.0.0'
+config-version: 2
+profile: 'PI_M3_DE_FS'
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+models:
+  PI_M3_DE_FS:
+    silver:
+      schema: silver
+      +materialized: view
+    gold:
+      schema: gold
+      +materialized: table
+seeds:
+  PI_M3_DE_FS:
+    +schema: gold
