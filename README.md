@@ -25,6 +25,7 @@ La arquitectura fue diseñada siguiendo un enfoque **serverless** y de **bajo ma
 
 ## 3. Estructura del Proyecto 📂
 
+```
 .
 ├── .dbt/
 │   └── profiles.yml
@@ -34,19 +35,22 @@ La arquitectura fue diseñada siguiendo un enfoque **serverless** y de **bajo ma
 ├── dags/
 │   └── pi3_youtube_pipeline.py
 ├── docs/
-│   └── PI_M3_Analysis.docx     <-- DOCUMENTO DE ANÁLISIS EN CAPA GOLD
+│   └── PI_M3_Analysis.docx
 ├── youtube_dbt_project/
 │   ├── models/
 │   │   ├── silver/
 │   │   ├── gold/
-│   │   └── ...
+│   │   ├── sources.yml
+│   │   └── schema.yml
+│   ├── seeds/
+│   │   └── dim_region.csv
 │   └── dbt_project.yml
 ├── .gitignore
 ├── Dockerfile
 ├── entrypoint.sh
 ├── requirements.txt
 └── youtubepipeline_e2e.py
-
+```
 
 ---
 
@@ -71,7 +75,17 @@ Una vez procesados los datos y almacenados en la capa `gold`, se ejecutaron una 
 
 ---
 
-## 6. Despliegue y Ejecución
+## 6. CI/CD con GitHub Actions 🔄
+
+Para garantizar la calidad y mantenibilidad del código, se implementó un flujo de CI/CD con GitHub Actions. El workflow, definido en `.github/workflows/ci.yml`, se dispara en cada `push` o `pull request` a la rama `main` y ejecuta los siguientes pasos:
+1.  Clona el código del repositorio.
+2.  Instala `dbt` y sus dependencias (como `dbt_utils`).
+3.  Configura las credenciales de BigQuery de forma segura usando un secreto de GitHub.
+4.  Ejecuta `dbt build`, que corre los seeds, los modelos y los tests, validando la integridad de todo el proyecto de transformación.
+
+---
+
+## 7. Despliegue y Ejecución
 
 El despliegue y la ejecución se realizan mediante comandos de `gcloud` para construir la imagen de Docker, crear el Cloud Run Job y subir el DAG a Composer.
 
@@ -84,6 +98,6 @@ El despliegue y la ejecución se realizan mediante comandos de `gcloud` para con
 
 ---
 
-## 7. Autor
+## 8. Autor
 
 **Federico Strologo**
